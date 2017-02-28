@@ -1,6 +1,7 @@
-# Capistrano::Ec2Tagged
+# Capistrano::Ec2Filtered
 
-Get IP addresses of AWS EC2 instances filtered by their tags.
+Get IP addresses of AWS EC2 instances filtered.
+This is inspired by [Capistrano::Ec2Tagged](https://github.com/a2ikm/capistrano-ec2_tagged).
 
 ## Requirements
 
@@ -11,46 +12,43 @@ Get IP addresses of AWS EC2 instances filtered by their tags.
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano-ec2_tagged'
+    gem 'capistrano-ec2_filterd'
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install capistrano-ec2_tagged
-
 ## Usage
+
+### AWS credentials
+
+See: http://docs.aws.amazon.com/sdkforruby/api/Aws/EC2/Client.html
+
+> Default credentials are loaded automatically from the following locations:
+> 
+> * ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
+> * Aws.config[:credentials]
+> * The shared credentials ini file at ~/.aws/credentials (more information)
+> * From an instance profile when running on EC2
+
+The credentials must have `ec2:DescribeInstances` permission.
+
+### Your Capfile
 
 Add this line to your application's Capfile:
 
 ```ruby
-require 'capistrano/ec2_tagged'
+require 'capistrano/ec2_filterd'
 ```
 
-And set credentials with AmazonEC2ReadOnlyAccess permission in config/deploy.rb as:
-
+Then call `ec2_filterd` method in each stage files like config/deploy/production.rb as:
 
 ```ruby
-set :aws_access_key_id, "YOUR ACCESS KEY ID"
-set :aws_secret_access_key, "YOUR SECRET ACCESS KEY"
-set :aws_region, "ap-northeast-1"
+role :web, ec2_filterd([{name: "tag:Name", values: ["my-web-server"]}])
+role :app, ec2_filterd([{name: "tag:Name", values: ["my-app-server"]}])
+role :db, ec2_filterd([{name: "tag:Name", values: ["my-db-server"]}])
 ```
 
-Then call `ec2_tagged` method in each stage files like config/deploy/production.rb as:
+Details of the filter expression is following link.
 
-```ruby
-role :web, ec2_tagged("Name" => "my-web-server")
-role :app, ec2_tagged("Name" => "my-app-server")
-role :db,  ec2_tagged("Name" => "my-db-server")
-```
-
-
-## Contributing
-
-1. Fork it ( http://github.com/a2ikm/capistrano-ec2_tagged/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+http://docs.aws.amazon.com/sdkforruby/api/Aws/EC2/Client.html#describe_instances-instance_method

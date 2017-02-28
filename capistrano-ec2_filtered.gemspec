@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'capistrano/ec2_tagged/version'
+require 'capistrano/ec2_filtered/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "capistrano-ec2_tagged"
-  spec.version       = Capistrano::Ec2Tagged::VERSION
-  spec.authors       = ["Masato Ikeda"]
-  spec.email         = ["masato.ikeda@gmail.com"]
-  spec.summary       = %q{Get ip addresses of AWS EC2 instances filtered by their tags.}
-  spec.description   = %q{Get ip addresses of AWS EC2 instances filtered by their tags.}
+  spec.name          = "capistrano-ec2_filtered"
+  spec.version       = Capistrano::Ec2Filtered::VERSION
+  spec.authors       = ["NewGyu"]
+  spec.email         = ["newgyu@kinoboku.net"]
+  spec.summary       = %q{Get ip addresses of AWS EC2 instances filtered.}
+  spec.description   = %q{Get ip addresses of AWS EC2 instances filtered.}
   spec.homepage      = "https://github.com/a2ikm/capistrano-ec2_tagged"
   spec.license       = "MIT"
 
