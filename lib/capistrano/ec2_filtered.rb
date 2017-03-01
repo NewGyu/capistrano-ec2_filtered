@@ -17,6 +17,4 @@ module Capistrano
   end
 end
 
-if Capistrano::Configuration.instance
-  Capistrano::Ec2Filtered.extend(Capistrano::Configuration.instance)
-end
+extend  Capistrano::Ec2Filtered
